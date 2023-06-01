@@ -168,7 +168,7 @@ def always_roll(n):
     """
     assert n >= 0 and n <= 10
     # BEGIN PROBLEM 6
-    "*** YOUR CODE HERE ***"
+    return lambda score0, score1: n
     # END PROBLEM 6
 
 
@@ -198,7 +198,14 @@ def is_always_roll(strategy, goal=GOAL):
     False
     """
     # BEGIN PROBLEM 7
-    "*** YOUR CODE HERE ***"
+    total = 0
+    for i in range(100):
+        for j in range(100):
+            total += strategy(i, j)
+    if total / 10000 == strategy(0, 0):
+        return True
+    else:
+        return False
     # END PROBLEM 7
 
 
@@ -214,7 +221,13 @@ def make_averaged(original_function, total_samples=1000):
     3.0
     """
     # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
+    def average(*args):
+        i, total = 0, 0
+        while i < total_samples:
+            total += original_function(*args)
+            i += 1
+        return total / total_samples
+    return average
     # END PROBLEM 8
 
 
@@ -228,7 +241,15 @@ def max_scoring_num_rolls(dice=six_sided, total_samples=1000):
     1
     """
     # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
+    max_score = 0
+    min_num_rolls = 10
+    average = make_averaged(roll_dice, total_samples)
+    for i in range(1, 11):
+        outcome = average(i, dice)
+        if outcome > max_score:
+            max_score = outcome
+            min_num_rolls = i
+    return min_num_rolls
     # END PROBLEM 9
 
 
@@ -272,14 +293,21 @@ def tail_strategy(score, opponent_score, threshold=12, num_rolls=6):
     points, and returns NUM_ROLLS otherwise. Ignore score and Square Swine.
     """
     # BEGIN PROBLEM 10
-    return num_rolls  # Remove this line once implemented.
+    if tail_points(opponent_score) >= threshold:
+        return 0
+    else:
+        return num_rolls
     # END PROBLEM 10
 
 
 def square_strategy(score, opponent_score, threshold=12, num_rolls=6):
     """This strategy returns 0 dice when your score would increase by at least threshold."""
     # BEGIN PROBLEM 11
-    return num_rolls  # Remove this line once implemented.
+    updated_score = square_update(0, score, opponent_score)
+    if updated_score - score >= threshold:
+        return 0
+    else:
+        return num_rolls
     # END PROBLEM 11
 
 
