@@ -44,9 +44,9 @@ statements has the same effect as using both if and elif cases?
 
 A: special_case() and case_in_point() return the same output because
 in the special_case(), 'if elif else' compound statement only executes
-one of the header statements, the rest will skip. In the case_in_point(),
+one of the clauses, then skip the rest. In the case_in_point(),
 the return statement is the terminate point of a function. Therefore, the rest
-will be never executed. Based on my findings, using if and return statements
+will be never executed. Based on my findings, using if and return together
 will result the same as 'if elif else' statement
 """
 
@@ -160,6 +160,7 @@ def unique_digits(n):
         i += 1
     return count
 
+
 def has_digit(n, k):
     """Returns whether K is a digit in N.
     >>> has_digit(10, 1)
@@ -172,34 +173,3 @@ def has_digit(n, k):
             return True
         n //= 10
     return False
-
-
-# Q7
-x = 11 % 4
-y = x
-x **= 2
-
-"""
-Global Frame
-
-x => 9
-y => 3
-"""
-
-
-# Q8
-def double(x):
-    return x * 2
-
-def triple(x):
-    return x * 3
-
-hat = double
-double = triple
-
-"""
-     Frames                   Objects
-
-triple, double  => func triple(x) [parent=Global]
-hat             => func double(x) [parent=Global]
-"""
