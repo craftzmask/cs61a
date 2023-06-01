@@ -112,4 +112,20 @@ def cycle(f1, f2, f3):
     >>> do_two_cycles(1)
     19
     """
-    "*** YOUR CODE HERE ***"
+    def func1(n):
+        def func2(x):
+            if n == 0:
+                return x
+            else:
+                i = 1
+                while i <= n:
+                    if i % 3 == 1:
+                        x = f1(x)
+                    elif i % 3 == 2:
+                        x = f2(x)
+                    else:
+                        x = f3(x)
+                    i += 1
+            return x
+        return func2
+    return func1
