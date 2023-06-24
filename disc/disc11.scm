@@ -36,6 +36,24 @@
 (draw with-cons)
 
 
+(define (add-last lst el)
+    (if (null? lst)
+        (list el)
+        (cons (car lst) (add-last (cdr lst) el))
+    )
+)
+
+
+(define (list-concat a b)
+    (if (null? b)
+        a
+        (list-concat (add-last a (car b)) (cdr b))
+    )
+)
+(expect (list-concat '(1 2 3) '(2 3 4)) (1 2 3 2 3 4))
+(expect (list-concat '(3) '(2 1 0)) (3 2 1 0))
+
+
 (define (remove item lst)
   (filter (lambda (x) (not (eq? x item))) lst)
 )
@@ -44,3 +62,13 @@
 (expect (remove 1 '(1 3 2)) (3 2))
 (expect (remove 42 '(1 3 2)) (1 3 2))
 (expect (remove 3 '(1 3 3 7)) (1 7))
+
+
+(define (duplicate lst)
+    (if (null? lst)
+        lst
+        (append (list (car lst) (car lst)) (duplicate (cdr lst)))
+    )
+)
+(expect (duplicate '(1 2 3)) (1 1 2 2 3 3))
+(expect (duplicate '(1 1)) (1 1 1 1))
