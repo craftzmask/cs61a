@@ -22,13 +22,13 @@ def calc_eval(exp):
         elif operator == 'define':  # define expressions
             return eval_define(operands)
         else:  # Call expressions
-            return calc_apply(OPERATORS[exp.first], operands)  # UPDATE THIS FOR Q3
+            return calc_apply(calc_eval(exp.first), operands)  # UPDATE THIS FOR Q3
     elif exp in OPERATORS:   # Looking up procedures
         return OPERATORS[exp]
     elif isinstance(exp, int) or isinstance(exp, bool):   # Numbers and booleans
         return exp
     elif exp in bindings:  # CHANGE THIS CONDITION FOR Q5
-        return bindings[exp]  # UPDATE THIS FOR Q5
+        return calc_eval(bindings[exp])  # UPDATE THIS FOR Q5
 
 
 def calc_apply(op, args):
@@ -77,8 +77,13 @@ def eval_and(operands):
     >>> calc_eval(Pair("and", nil))
     True
     """
-    # BEGIN SOLUTION Q4
-
+    if operands is nil:
+        return True
+    if operands.rest is nil:
+        return calc_eval(operands.first)
+    if type(operands.first) is int and operands.first == 0:
+        return eval_and(operands.rest)
+    return calc_eval(operands.first) and eval_and(operands.rest)
 
 
 bindings = {}
@@ -99,7 +104,8 @@ def eval_define(expr):
     >>> calc_eval(Pair("d", Pair(4, Pair(2, nil))))
     2
     """
-    # BEGIN SOLUTION Q5
+    bindings[expr.first] = expr.rest.first
+    return expr.first
 
 
 OPERATORS = {"//": floor_div, "+": addition, "-": subtraction, "*": multiplication, "/": division}
