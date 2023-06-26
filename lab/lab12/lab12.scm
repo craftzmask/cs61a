@@ -19,8 +19,34 @@
     ((fn (car s)) (cons (car s) (filter fn (cdr s))))
     (else         (filter fn (cdr s)))))
 
-(define (count x s) 'YOUR-CODE-HERE)
+(define (count x s)
+  (cond
+    ((null? s) 0)
+    ((eq? (car s) x) (+ 1 (count x (cdr s))))
+    (else (count x (cdr s)))
+  )
+)
 
-(define (unique s) 'YOUR-CODE-HERE)
+(define (unique s)
+  (if (null? s) 
+      nil
+      (cons (car s) (filter (lambda (x) (not (eq? x (car s)))) (unique (cdr s))))
+  )
+)
 
-(define (tally names) 'YOUR-CODE-HERE)
+(define (tally names)
+  (define (helper unique_names)
+    (if (null? unique_names) 
+        nil
+        (cons 
+          (list (car unique_names) (count (car unique_names) names))
+          (helper (cdr unique_names))
+        )
+    )
+  )
+
+  (if (null? names) 
+      nil
+      (helper (unique names))
+  )
+)
