@@ -25,17 +25,23 @@ CREATE TABLE sevens AS
 
 
 CREATE TABLE average_prices AS
-  SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+  SELECT category, AVG(MSRP) as average_price FROM products GROUP BY category;
 
 
 CREATE TABLE lowest_prices AS
-  SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+  SELECT store, item, MIN(price) FROM inventory GROUP BY item;
 
 
 CREATE TABLE shopping_list AS
-  SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+  SELECT name, store
+  FROM products, lowest_prices
+  WHERE name = item
+  GROUP BY category
+  HAVING MIN(MSRP / rating);
 
 
 CREATE TABLE total_bandwidth AS
-  SELECT "REPLACE THIS LINE WITH YOUR SOLUTION";
+  SELECT SUM(Mbs)
+  FROM shopping_list AS sl, stores AS s
+  WHERE sl.store = s.store;
 
