@@ -41,6 +41,23 @@ def reverse(lst):
         r -= 1
 
 
+def widest_level(t):
+    """
+    >>> sum([[1], [2]], [])
+    [1, 2]
+    >>> t = Tree(3, [Tree(1, [Tree(1), Tree(5)]),
+    ...              Tree(4, [Tree(9, [Tree(2)])])])
+    >>> widest_level(t)
+    [1, 5, 9]
+    """
+    levels = []
+    x = [t]
+    while x:
+        levels.append([label(t) for t in x])
+        x = sum([branches(t) for t in x], [])
+    return max(levels, key=len)
+
+
 def in_order_traversal(t):
     """
     Generator function that generates an "in-order" traversal, in which we
