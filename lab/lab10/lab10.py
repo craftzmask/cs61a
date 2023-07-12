@@ -1,15 +1,13 @@
 def insert_into_all(item, nested_list):
     """Return a new list consisting of all the lists in nested_list,
     but with item added to the front of each. You can assume that
-     nested_list is a list of lists.
+    nested_list is a list of lists.
 
     >>> nl = [[], [1, 2], [3]]
     >>> insert_into_all(0, nl)
     [[0], [0, 1, 2], [0, 3]]
     """
-    for lst in nested_list:
-        lst.insert(0, item)
-    return nested_list
+    return [[item] + lst for lst in nested_list]
 
 
 def subseqs(s):
@@ -25,8 +23,8 @@ def subseqs(s):
     if not s:
         return [[]]
     else:
-        ________________
-        ________________
+        without_first = subseqs(s[1:])
+        return insert_into_all(s[0], without_first) + without_first
 
 
 def non_decrease_subseqs(s):
@@ -45,14 +43,14 @@ def non_decrease_subseqs(s):
     """
     def subseq_helper(s, prev):
         if not s:
-            return ____________________
+            return [[]]
         elif s[0] < prev:
-            return ____________________
+            return subseq_helper(s[1:], prev)
         else:
-            a = ______________________
-            b = ______________________
-            return insert_into_all(________, ______________) + ________________
-    return subseq_helper(____, ____)
+            a = subseq_helper(s[1:], s[0])
+            b = subseq_helper(s[1:], prev)
+            return insert_into_all(s[0], a) + b
+    return subseq_helper(s, 0)
 
 
 def num_trees(n):
@@ -75,7 +73,13 @@ def num_trees(n):
     429
 
     """
-    "*** YOUR CODE HERE ***"
+    if n == 1 or n == 2:
+        return 1
+    else:
+        total = 0
+        for i in range(1, n):
+            total += num_trees(n - i) * num_trees(i)
+        return total
 
 
 def partition_gen(n):
@@ -90,11 +94,11 @@ def partition_gen(n):
     """
     def yield_helper(j, k):
         if j == 0:
-            ____________________________________________
-        elif ____________________________________________:
-            for small_part in ________________________________:
-                yield ____________________________________________
-            yield ________________________________________
+            yield []
+        elif j > 0 and k > 0:
+            for small_part in yield_helper(j - k, k):
+                yield [k] + small_part
+            yield from yield_helper(j, k - 1)
     yield from yield_helper(n, n)
 
 
