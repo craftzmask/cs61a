@@ -102,3 +102,23 @@ def deep_map(f, link):
         return Link(deep_map(f, link.first), deep_map(f, link.rest))
     else:
         return Link(f(link.first), deep_map(f, link.rest))
+
+
+def repeated(f):
+    """
+    >>> double = lambda x: 2 * x
+    >>> funcs = repeated(double)
+    >>> identity = next(funcs)
+    >>> double = next(funcs)
+    >>> quad = next(funcs)
+    >>> oct = next(funcs)
+
+    >>> [g(1) for _, g in
+    ...  zip(range(5), repeated(lambda x: 2 * x))]
+    [1, 2, 4, 8, 16]
+    """
+
+    g = lambda x: x
+    while True:
+        yield g 
+        g = (lambda g: lambda x: f(g(x)))(g)
