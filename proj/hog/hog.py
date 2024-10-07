@@ -304,7 +304,6 @@ def run_experiments():
     "*** You may add additional experiments as you wish ***"
 
 
-
 def boar_strategy(score, opponent_score, threshold=11, num_rolls=6):
     """This strategy returns 0 dice if Boar Brawl gives at least THRESHOLD
     points, and returns NUM_ROLLS otherwise. Ignore score and Sus Fuss.
@@ -328,7 +327,16 @@ def final_strategy(score, opponent_score):
     *** YOUR DESCRIPTION HERE ***
     """
     # BEGIN PROBLEM 12
-    return 6  # Remove this line once implemented.
+    # Check whether I can win by rolling 0, 1 or 2 dice
+    for i in range(3):
+        if score + take_turn(i, score, opponent_score) >= GOAL:
+            return i
+    # roll 0 whenever it would give you more points on average than rolling 6.
+    num_rolls = 6
+    average_score_roll_6 = make_averaged(always_roll(num_rolls))(score, opponent_score)
+    average_score_roll_0 = make_averaged(boar_strategy)(score, opponent_score, average_score_roll_6, num_rolls)
+    return 0 if average_score_roll_0 > average_score_roll_6 else num_rolls
+    #return 0 if average_win_rate(boar_strategy) > average_win_rate(always_roll(6)) else 6
     # END PROBLEM 12
 
 
