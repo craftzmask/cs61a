@@ -254,7 +254,15 @@ def max_scoring_num_rolls(dice=six_sided, times_called=1000):
     1
     """
     # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
+    average = make_averaged(roll_dice, times_called)
+    lowest_num_rolls = 1
+    max_score = 0
+    for i in range(1, 11):
+        score = average(i, dice)
+        if score > max_score:
+            lowest_num_rolls = i
+            max_score = score
+    return lowest_num_rolls
     # END PROBLEM 9
 
 
