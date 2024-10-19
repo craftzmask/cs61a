@@ -327,6 +327,16 @@ def final_strategy(score, opponent_score):
     *** YOUR DESCRIPTION HERE ***
     """
     # BEGIN PROBLEM 12
+    # Check whether can win by rolling 0, 1 or 2 dice
+    for i in range(0, 3):
+        if score + take_turn(i, score, opponent_score) >= GOAL:
+            return i
+    
+    # Roll 0 whenever it would give you more points on average than rolling 6
+    averaged_points_rolled_6 = make_averaged(roll_dice, 100)(6)
+    if take_turn(0, score, opponent_score) >= averaged_points_rolled_6:
+        return 0
+
     return 6  # Remove this line once implemented.
     # END PROBLEM 12
 
